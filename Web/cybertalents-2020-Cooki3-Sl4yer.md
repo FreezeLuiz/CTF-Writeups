@@ -8,7 +8,7 @@ Visiting the website directs us the the main page where there is a login prompt 
 
 ![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Web/images/Cybertalents/cookie_slayer-mainpage.PNG "Main Page")
 
-Inspecting the source code of the page we will find an HTML comment saying that the creds are `guest:guest`, when we login using these creds we will be redirected to the gues profile.
+Inspecting the source code of the page we will find an HTML comment saying that the creds are `guest:guest`, when we login using these creds we will be redirected to the guest profile.
 
 ![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Web/images/Cybertalents/cookie_slayer-guest-login.PNG "Guest Account")
 
