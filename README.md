@@ -2,7 +2,7 @@
 
 # My CTF-Writeups
 An attempt to explain some CTF challenges, hope you find them useful!
-💀
+📖
 
 ## Some links...
 
