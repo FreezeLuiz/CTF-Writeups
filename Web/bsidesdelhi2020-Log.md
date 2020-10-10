@@ -16,9 +16,9 @@ Going into the website, we can see lots of files to click on and they basically 
 
 If you keep going down the list, you will eventually find a pattern in the url `http://3.7.251.179/click-here_1.php` the name of the `php` script in the directory, increments by 1 all the way to 99, by then you should try numbers like `click-here_100.php` and `click-here_0.php`... At last you will find the correct file _hopefully_ that is `click-here_00.php` 
 
-After that you will be greeted with a new response
+After that you will be greeted with a new response...
 
-![img](/path/to/correct/file "Correct File")
+![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Web/images/BsidesDelhi2020/Log-Correct_file.PNG)
 
 `You got the right 'file' :)` This is considered as a hint from the author of the challenge, along with the description of using `GET` the intended path is to use `file` as a parameter in a `GET` request. 
 
