@@ -58,7 +58,7 @@ Another comment in the HTML source code will lead us down the path where the cha
 
 Checking the cookies in the page, we will see that there are 2 cookies `Piece` and `Our_Fav_Cookie`. The latter one is SHA256 hashed, if we try to crack it we will have the cracked result of `O` (capital letter 'o')
 
-Refreshing the page, we will see that `Piece` cookie will be incremented by 1 and `Our_Fav_Cookie` value changed to a different SHA256 hash, if we try to crack the new one we will have the result of `F`
+Refreshing the page, we see that `Piece` cookie value incrementes by 1 and `Our_Fav_Cookie` value changes to a different SHA256 hash, if we try to crack the new one we will have the result of `F`
 
 Now the object becomes a bit clear, there are multiple pieces of the flag and they are hidden in these SHA256 hashes, we need to get all the pieces before getting the flag. 
 
