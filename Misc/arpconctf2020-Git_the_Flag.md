@@ -1,6 +1,8 @@
 # Arpcon CTF 2020: Misc - Git The Flag (700 Points)
 
-![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Misc/images/arpconctf2020-Git_the_Flag/git-the-flag_desc.PNG "Challenge Description")
+<p align="center">
+<img src="https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Misc/images/arpconctf2020-Git_the_Flag/git-the-flag_desc.PNG">
+</p>
 
 The challenge descrption didn't indicate any path to take in the challenge, however we are presented with a link that lets' us download a folder `secret` that contains a `.git` hidden folder inside.
 
