@@ -1,6 +1,8 @@
 # Bsides Delhi CTF 2020: Web - Robot Master (Variable Scoring)
 
-![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Web/images/BsidesDelhi2020/Robot_Master-Description.PNG "Challenge Description")
+<p align="center">
+<img src="https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Web/images/BsidesDelhi2020/Robot_Master-Description.PNG">
+</p>
 
 This challenge was a fun scavenge hunt, although it will take some time if you cannot automate specific parts of the process. 
 
