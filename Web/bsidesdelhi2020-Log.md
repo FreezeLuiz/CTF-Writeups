@@ -10,10 +10,9 @@ From the description of the challenge we can get 2 key elements; The first one i
 ## Recon and Analysis
 
 Going into the website, we can see lots of files to click on and they basically all end up giving the same output..
-<p align="center">
-<img align="left" src="/path/to/intro">
-<img align="right" src="/path/to/intro2">
-</p>
+
+<img align="left" src="https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Web/images/BsidesDelhi2020/Log-intro.PNG">
+<img align="right" src="https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Web/images/BsidesDelhi2020/Log-intro2.PNG">
 
 If you keep going down the list, you will eventually find a pattern in the url `http://3.7.251.179/click-here_1.php` the name of the `php` script in the directory, increments by 1 all the way to 99, by then you should try numbers like `click-here_100.php` and `click-here_0.php`... At last you will find the correct file _hopefully_ that is `click-here_00.php` 
 
