@@ -1,10 +1,10 @@
-# Bsides Delhi CTF 2020: Web - Robot Master (Variable Scoring)
+# Bsides Delhi CTF 2020: Web - Log (Variable Scoring)
 
 <p align="center">
 <img src="https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Web/images/BsidesDelhi2020/Log-description.PNG">
 </p>
 
-From the description of the challenge we can get 2 key elements; The first one is that `GET` method will be used at some point and the second is that this challenge has something to do with `Logs`.
+From the description of the challenge, we can get 2 key elements; the first one is that `GET` method will be used at some point and the second is that this challenge has something to do with `Logs`.
 
 
 ## Recon and Analysis
@@ -14,21 +14,21 @@ Going into the website, we can see lots of files to click on and they basically 
 ![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Web/images/BsidesDelhi2020/Log-intro.PNG)
 ![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Web/images/BsidesDelhi2020/Log-intro2.PNG)
 
-If you keep going down the list, you will eventually find a pattern in the url `http://3.7.251.179/click-here_1.php` the name of the `php` script in the directory, increments by 1 all the way to 99, by then you should try numbers like `click-here_100.php` and `click-here_0.php`... At last you will find the correct file _hopefully_ that is `click-here_00.php` 
+If you keep going down the list, you will eventually find a pattern in the url `http://3.7.251.179/click-here_1.php`. The name of the `php` script in the directory increments by 1 all the way to 99, by then you should try numbers like `click-here_100.php` and `click-here_0.php`... At last you will find the correct file _hopefully_ that is `click-here_00.php`. 
 
-After that you will be greeted with a new response...
+After that, you will be greeted with a new response:
 
 ![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Web/images/BsidesDelhi2020/Log-Correct_file.PNG)
 
-`You got the right 'file' :)` This is considered as a hint from the author of the challenge, along with the description of using `GET` the intended path is to use `file` as a parameter in a `GET` request. 
+`You got the right 'file' :)` is considered a hint from the author of the challenge along with the description of using `GET`. The intended path is to use `file` as a parameter in a `GET` request. 
 
-Trying out this URL `http://3.7.251.179/click-here_00.php?file=../../../../../../../../etc/passwd` will yeld us LFI and we can read the content of `/etc/passwd` and this is where the challenge begins.
+Trying out the url `http://3.7.251.179/click-here_00.php?file=../../../../../../../../etc/passwd` will yeld us LFI (Local File Inclusion) and we can read the content of `/etc/passwd`, where the challenge begins.
 
 ## Solution and Flag
 
-Searching around the internet for LFI vulnerabilities and payloads I came across a couple of interesting stuff from [PayloadAllTheThings](https://github.com/cyberheartmi9/PayloadsAllTheThings/tree/master/File%20Inclusion%20-%20Path%20Traversal)
+Searching around the internet for LFI vulnerabilities and payloads. I came across a couple of interesting stuff from [PayloadAllTheThings](https://github.com/cyberheartmi9/PayloadsAllTheThings/tree/master/File%20Inclusion%20-%20Path%20Traversal).
 
-Trying to read the content of the `click-here_00.php` itself using `php://filter/convert.base64-encode/resource=click-here_00.php` we will have the base64 encoded script, we can easily decode it and view the php script. 
+Trying to read the content of the `click-here_00.php` itself using `php://filter/convert.base64-encode/resource=click-here_00.php`, we will have the base64 encoded script. We can easily decode it and view the php script:
 
 ```html
 <html>
@@ -49,10 +49,10 @@ Trying to read the content of the `click-here_00.php` itself using `php://filter
 </html>
 ```
 
-Checking the location of the HTTP error logs, I found [this](https://blog.codeasite.com/how-do-i-find-apache-http-server-log-files/) blog.
+Checking the location of the HTTP error logs, I found [this](https://blog.codeasite.com/how-do-i-find-apache-http-server-log-files/) blog:
 >Debian / Ubuntu Linux Apache error log file location – /var/log/apache2/error.log
 
-So I used the same LFI payload but changed the resource to `/var/log/apache2/error.log` and got this output...
+So, I used the same LFI payload but changed the resource to `/var/log/apache2/error.log` and got this output:
 
 ```html
 <html>
@@ -63,22 +63,22 @@ So I used the same LFI payload but changed the resource to `/var/log/apache2/err
     </body>
 ```
 
-Decoding that file from base64, I found something similar to `brainfuck` which is an [esoteric programming language](https://en.wikipedia.org/wiki/Esoteric_programming_language).
+Decoding that file from base64, I found something similar to `brainfuck`, which is an [esoteric programming language](https://en.wikipedia.org/wiki/Esoteric_programming_language).
 
 ```brainfuck
 ----------]<-<---<-------<---------->>>>+[<<-----------------,<<--,>>,<<------,>>,<<+++++++++++,>>,<<------,>>,<<------------,++++,++,++++++++,---------------,++++++++++++,-,-----,+++++++,>---------------,<-------,+++++++++,,+,>>+,<<----------------,----,++++,
 ```
 
-When reading about `brainfuck`, I found that it can be interpreted and output something only if it contains a period `.` and it will request an input when it contains a coma `,` ... The string that I have only contains comas, and I find that there are closed square brackets that are not opened and vise-versa. 
+While reading about `brainfuck`, I found that it can be interpreted and output something only if it contains a period `"."` and it will request an input when it contains a coma `","`. The string that I had only contained comas, and I found that there were closed square brackets that were not opened and vise-versa.
 
->Maybe I need to reverse it before interpreting it. 
+>Maybe I need to reverse it before interpreting it. Hmmmmmm!!
 
-but then I get stuck on the no periods part.. Then it hit me, maybe there is a "Reversed-brainfuck" esoteric programming language, and a simple google search revealed a decoder and I got this output.
+Afterward, I got stuck on the "no periods" part.. Then it hit me, maybe there is a "Reversed-brainfuck" esoteric programming language, and a simple google search revealed a decoder and I got this output:
 
 ```
 /f/l/a/g/somethingUneed.txt
 ```
 
-Using the LFI payload again but this time the resource is going to be that new directory we just got, and just like that...
+Using the LFI payload again, but this time the resource is going to be that new directory, we will get the flag...
 
 `BSDCTF{L0cal_f1L3_InClu$10N_1$_v3RY_P015On0u$}`
