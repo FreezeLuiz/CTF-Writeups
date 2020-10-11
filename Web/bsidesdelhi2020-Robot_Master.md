@@ -9,7 +9,7 @@ This challenge was a fun scavenge hunt, although it will take some time if you c
 
 ## Recon and Analysis
 
-Going to the link `http://15.206.202.26/` of given we will see a static page welcoming us to the CTF. 
+Going to the link `http://15.206.202.26/` we will see a static page welcoming us to this CTF. 
 
 ```html
 <!DOCTYPE html>
@@ -26,7 +26,7 @@ Going to the link `http://15.206.202.26/` of given we will see a static page wel
 </html>
 ```
 
-A comment in the HTML source code will lead you down the page of searching `robots.txt`, you will find that the file exists and contains one entry
+A comment in the HTML source code will lead you down the page of searching `robots.txt`, where you will find that the file exists and contains one entry:
 
 ```
 http://15.206.202.26/robots.txt
@@ -56,11 +56,11 @@ Another comment in the HTML source code will lead us down the path where the cha
 
 ## Solution and Flag
 
-Checking the cookies in the page, we will see that there are 2 cookies `Piece` and `Our_Fav_Cookie`. The latter one is SHA256 hashed, if we try to crack it we will have the cracked result of `O` (capital letter 'o')
+Checking the page's cookies, we can see `Piece` and `Our_Fav_Cookie`. The latter is SHA256 hashed; if we try to crack it, we will have the cracked result of `O` (capital letter 'o').
 
-Refreshing the page, we see that `Piece` cookie value incrementes by 1 and `Our_Fav_Cookie` value changes to a different SHA256 hash, if we try to crack the new one we will have the result of `F`
+Refreshing the page, we see that `Piece` cookie value incrementes by 1 and `Our_Fav_Cookie` value changes to a different SHA256 hash; if we try to crack the new one, we will have the result of `F`.
 
-Now the object becomes a bit clear, there are multiple pieces of the flag and they are hidden in these SHA256 hashes, we need to get all the pieces before getting the flag. 
+Now the object becomes a bit clear; there are multiple pieces of the flag and they are hidden in these SHA256 hashes. We need to get all the pieces before getting the flag. 
 
 A simple python script can go through the website and get the cookies for us...
 
@@ -101,10 +101,10 @@ f67ab10ad4e4c53121b6a5fe4da9c10ddee905b978d3788d2723d7bfacbe28a9
 ...
 ```
 
-Using [crackstation](https://crackstation.net/) or [hashcat](https://hashcat.net/hashcat/) we can crack these hashes, and put them together. They will form the following string...
+Using [crackstation](https://crackstation.net/) or [hashcat](https://hashcat.net/hashcat/) we can crack these hashes, and put them together. They will form the following string:
 
 `OFQPGS{P00x135_ne3_o35g_cy4p3_70_pu3px}`
 
-Trying a random guess of ROT13 will yeld us the flag.
+Trying a random guess of ROT13 will yeld us the flag:
 
 `BSDCTF{C00K135_ar3_b35t_pl4c3_70_ch3ck}`
