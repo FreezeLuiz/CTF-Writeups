@@ -4,7 +4,7 @@
 <img src="https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Misc/images/arpconctf2020-Git_the_Flag/git-the-flag_desc.PNG">
 </p>
 
-The challenge descrption didn't indicate any path to take in the challenge, however we are presented with a link that lets' us download a folder `secret` that contains a `.git` hidden folder inside.
+The challenge descrption didn't indicate any path to take in the challenge; however, we are presented with a link that lets us download a folder `secret` that contains a `.git` hidden folder inside.
 
 
 ## Recon and Analysis
@@ -20,11 +20,11 @@ drwx------ 7 kali kali 4096 Oct  8 01:55 .git
 -rw-r--r-- 1 kali kali   87 Oct  8 01:53 README.md
 ```
 
-Looking at the folder, we see `FLAG.md` and `README.md`, the README contains the following description
+Looking at the folder, we see `FLAG.md` and `README.md`. The README contains the following description:
 
 >Git The Flag: A friend of ours lost his flag in the dark realms of git. Help him out.
 
-The first thing I like to do when I get my hands on a local `.git` repository, is to check the `git log -p` option for the history of commits.
+The first thing I like to do when I get my hands on a local `.git` repository is to check the `git log -p` option for the history of commits.
 
 ```
 commit 0bc7a94e82cb1dfaad8e44eae698b39e19e219b5
@@ -85,7 +85,7 @@ index 0000000..ab7b0ac
 +  file.write(base_cipher)
 ```
 
-The above commit has a python script that seems to be encrypting the content of `flag.txt` using AES, the script is using [pyaes](https://github.com/ricmoo/pyaes). And the key used in the encryption process looks like the `SECRET` we found in the commit before that.
+The above commit has a python script that seems to be encrypting the content of `flag.txt` using AES. The script is using [pyaes](https://github.com/ricmoo/pyaes), and the key used in the encryption process looks like the `SECRET` we found in the commit before that.
 
 
 ```
@@ -108,7 +108,7 @@ The above commit contains the content of the AES encrypted flag, with that we ha
 
 ## Solution and Flag
 
-By now you can guess it, we should reverse the AES script so we can recreate `flag.txt` from `flag.bin` and `SECRET`.
+By now, you can guess it; we should reverse the AES script, so we can recreate `flag.txt` from `flag.bin` and `SECRET`.
 
 
 ```python
