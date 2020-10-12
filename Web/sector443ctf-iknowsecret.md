@@ -1,5 +1,7 @@
 # Sector443 CTF 2020: Web - iknowsecret (443 points)
 
+## Description:
+
 ![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Web/images/sector443/iknowsecret/iknowsecret-chall_description.PNG "Challenge Description")
 
 The information from the challenge description is a lot! But we get 3 important things:
@@ -11,7 +13,7 @@ The information from the challenge description is a lot! But we get 3 important 
 >Sounds easy! Lets see...
 
 
-## Recon and Analysis
+## Recon and Analysis:
 
 I don't like dirbuster the website, because usually in CTF challenges thats not the intended route.
 
