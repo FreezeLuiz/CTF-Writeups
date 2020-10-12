@@ -36,6 +36,7 @@ This Token's Structure
 
 Payload . ???? . ????
 
+Then its not JWT :( *le sad noises!*
 ```
 
 When we send login requests multiple times, we get a different session cookie every time. 
