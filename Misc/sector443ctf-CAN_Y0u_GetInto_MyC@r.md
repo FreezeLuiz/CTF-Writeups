@@ -6,7 +6,7 @@
 
 From the description we get a `pcap` file, and a silly drawn graph where one axis was `speed` of a car and the other axis was `time`:
 
-![img](/path/to/graph "Silly graph")
+![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Misc/images/sector443/iot-graph.PNG "Silly graph")
 
 Nevertheless, our goal is to catch the hex identifier of the motor's ECU.
 
@@ -14,7 +14,7 @@ Nevertheless, our goal is to catch the hex identifier of the motor's ECU.
 
 Opening the `pcap` file in wireshark, we are greeted with the `CAN` protocol which is used in modern vehicles to allow the ECU (Electronic Control Unit) to communicate with other devices.
 
-![img](/path/to/pcap "bruh!")
+![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Misc/images/sector443/iot-pcap.PNG "bruh!")
 
 I tried searching the `CAN` protocol but there were a lot of information, and the CTF only had 1 hour left. So I starting thinking, if they want the identifier of the motor, then the payload must increase with time (just as we got from the graph)...
 
