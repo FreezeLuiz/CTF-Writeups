@@ -36,10 +36,10 @@ Try breaking my barrier. You'll find a key to save Emilia inside Roswaal's mansi
 >>>
 ```
 
-Trying out random stuff like `!@#$!%^@"` just to get it to crash, when it crashes it spills out an error that contains the directory and the script name with was `main.py`.
+Trying out random stuff like `!@#$!%^@"` just to get it to crash, when it crashes it spills out an error that contains the directory and the script name which was `main.py`.
 
 
-Also, the error was in `exec(string)` of the python script. So I tried to read the content of `key.txt` by supplying `'cat key.txt'` (notice the quotes to supply `exec()` a `string`) but the program terminates without giving me anything.
+Also, `exec(string)` was in the error from the python script. So I tried to read the content of `key.txt` by supplying `'cat key.txt'` (notice the quotes to supply `exec()` a `string`) but the program terminates without giving me anything.
 
 
 Next thing to do is search on how to escape this statement, to execute arbitrary code on the machine _Muhahaha!_
