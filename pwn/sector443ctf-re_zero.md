@@ -9,7 +9,7 @@ Anyways, I remember that the description only provided the name of the file `key
 
 ## Recon and Analysis:
 
-Connecting to the server given in the descript, which was `172.105.53.6 32780` we get the following, cool response. 
+Connecting to the server given, which was `172.105.53.6 32780`, we get the following cool response. 
 
 ```
 kali@kali:~/Documents/sector443/re:zero$ nc 172.105.53.6 32780
@@ -38,16 +38,13 @@ Try breaking my barrier. You'll find a key to save Emilia inside Roswaal's mansi
 
 Trying out random stuff like `!@#$!%^@"` just to get it to crash, when it crashes it spills out an error that contains the directory and the script name which was `main.py`.
 
-
 Also, `exec(string)` was in the error from the python script. So I tried to read the content of `key.txt` by supplying `'cat key.txt'` (notice the quotes to supply `exec()` a `string`) but the program terminates without giving me anything.
-
 
 Next thing to do is search on how to escape this statement, to execute arbitrary code on the machine _Muhahaha!_
 
-
 ## Solution
 
-After one google search on "how to escape python jails" lead me to [this](https://anee.me/escaping-python-jails-849c65cf306e?gi=6a471ceaec7e) article.
+After one google search on "how to escape python jails", I got [this](https://anee.me/escaping-python-jails-849c65cf306e?gi=6a471ceaec7e) article.
 
 Reading it carefully, I tried applying the same technique as the article using `__builtins__` module, and the final payload worked:
 
