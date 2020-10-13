@@ -2,9 +2,9 @@
 
 ## Description:
 
-...No image :'(
+...No picture of the description :'(
 
-From the description we get a `pcap` file, and a silly drawn graph where one axis was `speed` of a car and the other axis was `time`:
+From the description, we got a `pcap` file and a silly drawn graph where one axis was the `speed` of a car and the other axis was `time`:
 
 ![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Misc/images/sector443/iot-graph.PNG "Silly graph")
 
@@ -12,17 +12,17 @@ Nevertheless, our goal is to catch the hex identifier of the motor's ECU.
 
 ## Recon and Analysis:
 
-Opening the `pcap` file in wireshark, we are greeted with the `CAN` protocol which is used in modern vehicles to allow the ECU (Electronic Control Unit) to communicate with other devices.
+Opening the `pcap` file, in wireshark, we are greeted with the `CAN` protocol; which is used in modern vehicles to allow the ECU (Electronic Control Unit) to communicate with other devices.
 
 ![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Misc/images/sector443/iot-pcap.PNG "bruh!")
 
-I tried searching the `CAN` protocol but there were a lot of information, and the CTF only had 1 hour left. So I starting thinking, if they want the identifier of the motor, then the payload must increase with time (just as we got from the graph)...
+I tried searching on the `CAN` protocol but there were a lot of information, and the CTF only had 1 hour left. So, I starting thinking simplier. If they want the identifier of the motor, then the payload must increase with time (like we see from the kiddie graph)...
 
 Which bring me to the solution.
 
 ## Solution:
 
-My solution was to sort the payload and look for the payload that increases periodically with time (just like we see from the speedometer in any car) and try that identifier as the flag:
+My solution was to sort the payload (ascending order) and look for the payload that increases periodically with time (just like we see in the speedometer of any car) and try that identifier as the flag:
 
 ```
 ...
