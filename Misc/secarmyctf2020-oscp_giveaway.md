@@ -360,7 +360,7 @@ Unpacked 1 file.
 
 Now, let's open `ghidra` and try to analyze this binary file. After importing the binary and letting `ghidra` run its scans on it, I started to search for strings that begin with `Please`. That led us to a function called `main.flag`, and it contains the credentials for the fourth user `cuatro:p3dr00l1v4r3z`
 
-![rev](/path/to/secarmy-village_rev "no need to get the key")
+![rev](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Misc/images/SecArmyCTF/secarmy_village-reversing.PNG "no need to get the key")
 
 ```
 tres@svos:~$ su cuatro
@@ -384,7 +384,7 @@ The hint for the next challenge in `todo.txt` stats that we need to revisit the 
 
 Visiting the URL `http://192.168.1.4/justanothergallery`, we see a bunch of QR codes that are displayed via a carousel scroller.
 
-![QR Challenge](/path/to/qr/challenge "Carousel style")
+![QR Challenge](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Misc/images/SecArmyCTF/secarmy-qr_challenge.PNG "Carousel style")
 
 I decided to visit the `/var/www/html` directory in the server; since I already have a running `SSH` connection. I found the `justanothergallery` directory and it contains all the QR codes displayed in the previous URL, let's get them in to my box. 
 
@@ -401,7 +401,7 @@ Now, let's go to `CyberChef` and upload that `qr` directory and use the `Parse Q
 
 After reading throught the output, we get the credentials `cinco:ruy70m35` in `image-53.png`...
 
-![qr solved](/path/to/qr/challenge/solution "My complements to the Chef!")
+![qr solved](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Misc/images/SecArmyCTF/secarmy-qr_challenge_solution.PNG "My complements to the Chef!")
 
 ```
 cuatro@svos:/var/www/html/justanothergallery$ su cinco
@@ -536,7 +536,7 @@ www-data  1389  0.0  0.9 331604  9952 ?        S    09:12   0:00 /usr/sbin/apach
 
 Here's the plan, we get RCE (Remote Code Execution) from the vulnerable php script running on the apache web server, from there we can change the `readme9213.txt` file to be world readable. 
 
-![shellcms](/path/to/shellcms "Let me read plez!1")
+![shellcms](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Misc/images/SecArmyCTF/secarmy-shellcms.PNG "Let me read plez!1")
 
 After clicking on the `search` button...
 
@@ -592,7 +592,7 @@ func main() {
 
 Then I figured I should use `CyberChef` to try and figure out what these sequence of numbers, in `message.txt`, mean. I copy-pasted the number in `CyberChef` and used the `Magic` module with Depth of 3 (default) and checked the `intense mode`...
 
-![Magic](/path/to/cyberchief/magic "Magical Discovery")
+![Magic](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Misc/images/SecArmyCTF/secarmy-zip_password_magic.PNG "Magical Discovery")
 
 Low and behold, `secarmyxoritup` is the decoded string from these numbers. Indicating that the correct [recipe](https://gchq.github.io/CyberChef/#recipe=From_Decimal('Space',false)XOR(%7B'option':'UTF8','string':'x'%7D,'Standard',false)) was XOR-ing the ascii values with the key `x`; That key was in `key.txt`. 
 
@@ -631,7 +631,7 @@ There's a `keyboard.pcapng` file. Looks like the next challenge is analyzing tha
 
 Transfering `keyboard.pcapng` to our box, we can open it in wireshark. 
 
-![Wireshark](/path/to/wireshark/keyboard "HTTP!")
+![Wireshark](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Misc/images/SecArmyCTF/secarmy-keyboard_challenge_wireshark.PNG "HTTP!")
 
 There are a couple of HTTP, packets being sent. My first instinct was to `Export HTTP Objects` and see if we can extract anything interesting. 
 
@@ -821,7 +821,7 @@ Let's set a breaking point before the gets function: `b *0x400812`.
 
 When it prompts us for our input, supply a lot of `A`'s and keep steping through the instructions until we see the `leave` and `ret` functions being executed. 
 
-![pwn](/path/to/pwn "RIP... is that you?")
+![pwn](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Misc/images/SecArmyCTF/secarmy-pwn_rsp.PNG "RIP... is that you?")
 
 When the `ret` instruction gets executed, the content of `$rsp` is going to be the next `$rip`, and right now the contents of `$rsp` is our user supplied input. Which means we can redirect the execution of the program to execute the `setuid` functionality. 
 
