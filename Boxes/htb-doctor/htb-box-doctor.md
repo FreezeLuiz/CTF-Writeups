@@ -74,7 +74,7 @@ Only 3 ports are open: SSH on 22, HTTP on 80, and `Splunk` on 8089.
 
 Going to the URL `http://10.10.10.209`, you'll be greeted with a static HTML page. 
 
-![static](/path/to/static/html "Something is interesting here")
+![static](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-doctor/images/static-page-with-domain.PNG "Something is interesting here")
 
 I tend not to use `dirbuster` or any directory fuzzing tools in CTFs, because that's usually not the intended route. Instead, I take a quick look at the source code. 
 
@@ -98,23 +98,23 @@ ff02::2 ip6-allrouters
 
 Now, let's visit the URL `http://doctors.htb/`...
 
-![New web app!](/path/to/secure/messaging "New web app!")
+![New web app!](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-doctor/images/doctor-secure-messaging.PNG "New web app!")
 
 An entirely new web application appears where there is a login function and a register option. So, let's try to register a new user!
 
-![register](/path/to/secure/messaging/register "Register!")
+![register](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-doctor/images/doctor-secure-messaging-register.PNG "Register!")
 
 After being done with the registeration, we will be redirected back to the login page with a prompt saying that our account is only going to live for 20 minutes... _RIP_ gotta act like sonic and *be fast!*, or just re-create the account!
 
-![img](/path/to/secure/messaging/login "20 MINS!!!")
+![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-doctor/images/doctor-secure-messaging-login.PNG "20 MINS!!!")
 
 There is a browser plugin called [wappalyzer](https://www.wappalyzer.com/) that helps identify technologies used in websites... sometimes!... Using that plugin, we can identify that the server is using python `Flask`.
 
-![wappalyzer](/path/to/wappalyzer/image "woh!")
+![wappalyzer](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-doctor/images/wappalizer-output.PNG "woh!")
 
 After logging in, we can see that there is an option to view our `account` and an option to create a `new message`; creating a new message sounds promising. 
 
-![new message](/path/to/new/message "yay new message")
+![new message](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-doctor/images/doctor-secure-messaging-new-message.PNG "yay new message")
 
 Putting anything in the message will display it as it is in the `/post/<num here>` part of the webpage. Here we can start looking at the website's source code; we will find a commented out HTML tag.
 
@@ -156,11 +156,11 @@ The boilerplate way of identifying SSTI is the payload `{{7*7}}`, which will be 
 
 Let's create a `new message` with that payload and see if it will be reflected or not...
 
-![SSTI1](/path/to/injection/attempt "SSTI Payload")
+![SSTI1](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-doctor/images/doctor-template-injection-attempt.PNG "SSTI Payload")
 
 It did not reflect directly on the main page; however, if we check the `/archive` directory...
 
-![SSTI2](/path/to/injection/poc "SSTI PoC")
+![SSTI2](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-doctor/images/doctor-template-injection-poc.PNG "SSTI PoC")
 
 _WOOT!_ We will get the reflected input. The next thing to do is to get RCE. But how? We'll use `Python Objects and Modules`.
 
@@ -176,7 +176,7 @@ Payload = {{self.__init__.__global__.__builtins__}}
 
 Using that payload, we will have a list of python builtin functions that we can access using that object.
 
-![exec](/path/to/exec/injection "We have exec()")
+![exec](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-doctor/images/exec-template-injection.PNG "We have exec()")
 
 _The font maybe a bit small_; however, we can gain access to the `exec()` function, which lets us execute arbitrary python code.
 
@@ -192,11 +192,11 @@ If we get a python reverse shell [payload](https://github.com/swisskyrepo/Payloa
 
 ### Enumeration:
 
-![id](/path/to/id/image "We are user Web")
+![id](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-doctor/images/1st-user-web.PNG "We are user Web")
 
 I like to use enumeration scripts. They do the default enumeration commands quickly and display them beautifully. One of the most common ones for linux is [linpeas](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS). Running that script will reveal a password hidden in the `apache2 log` directory.
 
-![passwd](/path/to/shaun/password "Rock 'n' Roll!")
+![passwd](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-doctor/images/shaun-password.PNG "Rock 'n' Roll!")
 
 If you list the directories in `/home`, you will see that there is a user called `shaun`. If you try to use `su shaun` and copy-paste that password, you will be `shaun` and you can read the `user.txt` from `/home/shaun/user.txt`
 
@@ -212,7 +212,7 @@ Do you remember the `Splunk` service that we saw in the nmap scan? Yeah, let's t
 
 If you type in the URL of a browser `10.10.10.209:8089`, you will see that you have to accept an SSL certificate. Go ahead and accept it! You'll then be redirected to the `Splunkd` web page.
 
-![img](/path/to/splunkd/webpage "What the splunk!?")
+![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-doctor/images/doctor-splunkd-webpage.PNG "What the splunk!?")
 
 If you try to check the `services` tab, you'll be required to authenticate. The only set of credentials that we have is `shaun:Guitar123`; if you try that set, you'll get in.
 
