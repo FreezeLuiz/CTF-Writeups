@@ -1,6 +1,6 @@
 # Hack The Box : Doctor ( Easy - Linux )
 
-![intro](/path/to/doctor/card "HTB: Doctor")
+![intro](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-doctor/images/htb-doctor-card.jpg "HTB: Doctor")
 
 > Doctors are good with injections!
 
