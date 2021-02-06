@@ -1,5 +1,10 @@
-Overview (TL;DR)
-================
+# Hack The Box : Compromised ( Hard - Linux )
+
+![intro](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-compromised/images/compromised-intro.jpg)
+
+> Well boys! We got hacked, again.
+
+## Overview (TL;DR)
 
 >The box is compromised, and it's up to us to retrace the attacker's steps and find any backdoors that were left behind.
 
@@ -11,9 +16,9 @@ Overview (TL;DR)
 6. `dpkg -V` indicates an integrity violation for `/lib/x86_64-linux-gnu/security/pam_unix.so`
 7. Static analysis using ghidra to find a backdoor password in `pam_sm_authenticate` to root user, `su root` to get root.txt
 
-# Initial foothold (www-data)
+## Initial foothold (www-data)
 
-## Nmap scan
+### Nmap scan:
 
 The initial nmap TCP scan was enough to complete this box, there were only 2 ports open SSH on 22 and HTTP on 80. So by default we will check HTTP 80 and not bruteforce SSH creds _because we are good boys_
 
@@ -54,11 +59,11 @@ OS and Service detection performed. Please report any incorrect results at https
 # Nmap done at Sun Sep 13 02:59:47 2020 -- 1 IP address (1 host up) scanned in 220.95 seconds
 ```
 
-## Looking at HTTP port 80
+### Looking at HTTP port 80
 
 Opening the web browser and typing in the ip address will redirect us to the web page `http://10.10.10.207/shop/en`
 
-![img](/path/to/webpage/img "le epic txt")
+![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-compromised/images/htb-compromised-webpage1.PNG "le epic txt")
 
 The first thing we can get off of the main page is the content management system (CMS) name, which is `litecart`. If we search for an exploit we will see that version 2.1.2 has an authenticated arbitrary file upload... WE NEED CREDS!
 
@@ -72,7 +77,7 @@ LiteCart 2.1.2 - Arbitrary File Upload        | php/webapps/45267.py
 Shellcodes: No Results
 ```
 
-## Gobuster to find loot!
+### Gobuster to find loot!
 
 When I use Gobuster in CTFs or HTB I like to use the most common wordlists such as those in `/usr/share/wordlists/dirb` as it will 90% of the time catch the intended path. Anyways back to the box, gobuster located a `/backup` directory. Yay for loot!
 
@@ -105,9 +110,9 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
 
 Going to `http://10.10.10.207/backup/` we will find directory listing and inside there is a file `a.tar.gz` that is probably the backup of the websites files, so we should download it and check it out. 
 
-![img](/path/to/backup "a.tar.gz")
+![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-compromised/images/htb-compromised-backup.PNG "a.tar.gz")
 
-## Inspecting `a.tar.gz`
+### Inspecting `a.tar.gz`
 
 Normally if we try to extract the content of this tar archive we will use `tar -zxvf a.tar.gz` however we get this result...
 
@@ -159,23 +164,23 @@ There are a lot of files inside `/shop` and you can easily go down the rabbit ho
 
 That `file_put_contents()` line will put the credentials entered by the user in a file called `.log2301c9430d8593ae.txt` in the `/shop/admin` directory so it is worth checking if that file exists or not by visiting `http://10.10.10.207/shop/admin/.log2301c9430d8593ae.txt`
 
-![img](/path/to/admin/creds "noice!")
+![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-compromised/images/htb-compromised-wwwdata-creds.PNG "noice!")
 
 >User: admin Passwd: theNextGenSt0r3!~
 
 And just like that we found admin credentials for the CMS, time to see how the CVE works now. 
 
-## CVE-2018-12256 Arbitrary File Upload
+### CVE-2018-12256 Arbitrary File Upload
 
 The [exploit](https://www.exploit-db.com/exploits/45267) is pretty straight forward, you can send PHP scripts to the server to be executed via the `vQmod` xml upload capability, the server will accept the request only if you change the `Content-Type: application/x-php` from `x-php` to `xml` 
 
-![img](/path/to/upload "original request")
-![img](/path/to/upload/modified "modified request")
+![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-compromised/images/htb-compromised-upload-request.PNG "original request")
+![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-compromised/images/htb-compromised-upload-request-modified.PNG "modified request")
 
 vQmods are saved in this directory `/shop/vqmod/xml/` so our uploaded `info.php` is in `/shop/vqmod/xml/info.php` visiting `http://10.10.10.207/shop/vqmod/xml/info.php` will give us the PoC and print the PHP configuration of the server. 
 
-![img](/path/to/phpinfo "phpinfo(); go brrrr")
-![img](/path/to/phpinfo/disabledfunctions "Oh no disabled_functions... oh well")
+![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-compromised/images/htb-compromised-phpinfo1.PNG "phpinfo(); go brrrr")
+![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-compromised/images/htb-compromised-phpinfo2.PNG "Oh no disabled_functions... oh well")
 
 Scrolling through the phpinfo output, we can see a lot of information about the host `compromised` as well as the php version `7.2.24-0ubuntu0.18.04.6` and the fact that there are a lot of disabled functions that will make it hard for us to get command execution on the server. After a lot of searching on the internet, I found this [exploit](https://raw.githubusercontent.com/mm0r1/exploits/master/php7-gc-bypass/exploit.php) on github, that uses old php bugs to bypass the `disable_functions` config. 
 
@@ -201,7 +206,7 @@ function pwn($cmd) {
 
 I created the php bypass file `freeze.php` and uploaded it using the CVE and tried visiting `http://10.10.10.207/shop/vqmod/xml/freeze.php?cmd=id` and ...
 
-![img](/path/to/php/bypass "Tadaa!!")
+![img](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-compromised/images/htb-compromised-php-bypass.PNG "Tadaa!!")
 
 We have our first user, and the journey is just getting started. 
 
@@ -217,9 +222,9 @@ Linux compromised 4.15.0-101-generic #102-Ubuntu SMP Mon May 11 10:07:26 UTC 202
 uid=33(www-data) gid=33(www-data) groups=33(www-data)
 ```
 
-# Getting User
+## Getting User
 
-## From `www-data` to `mysql`
+### From `www-data` to `mysql`
 
 Looking at the files in `/var/www/html/shop` focusing on the config files, there is something interesting in `includes/config.inc.php` and I believe it occurs in other files as well, however the interesting thing is the default mysql credentials. 
 
@@ -315,7 +320,7 @@ mysql@compromised:~$
 
 Now that we have a better shell, we can enumerate efficiently to get out the next user which is `sysadmin`...
 
-## From `mysql` to `sysadmin`
+### From `mysql` to `sysadmin`
 
 Going for any low hanging fruit by typing `grep -nilr sysadmin` in the home directory of `mysql` we will see only one file that pops up. 
 
@@ -346,9 +351,9 @@ sysadmin@compromised:~$ wc -c user.txt
 sysadmin@compromised:~$
 ```
 
-# Getting Root
+## Getting Root
 
-## Static Analysis of `pam_unix.so`
+### Static Analysis of `pam_unix.so`
 
 After getting a hint on this part of the box, `dpkg --verify` was the way to know that there was some modification to the deb packages installed by default. You can read more about it [here](https://askubuntu.com/questions/792553/dpkg-v-what-does-the-output-mean).
 
@@ -490,5 +495,8 @@ root@compromised:~#
 
 That concludes the writeup for Compromised, the hard linux machine from hack the box. 
 
-
 _logout..._
+
+GG!
+
+🤘💀🤘
