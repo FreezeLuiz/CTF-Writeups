@@ -38,4 +38,4 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 
 ## HTB - Writeups
 
-I. [Doctor](https://github.com/FreezeLuiz/CTF-Writeups/blob/master/Boxes/htb-doctor/htb-box-doctor.md)
+I. [Doctor](https://freezeluiz.github.io/CTF-Writeups/htb-doctor.html)
