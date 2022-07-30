@@ -141,7 +141,7 @@ So, from this enumeration, we can get the following juicy info:
  1. Under development `/archive` directory
  2. Web application is running on `Flask` Web framework
  3. Our accounts only last for 20 mins
- >BONUS TIP: you can check my other CTF [writeup](https://raw.githubusercontent.com/FreezeLuiz/CTF-Writeups/master/Web/sector443ctf-iknowsecret.md) if you want to gain the admin's account. 😉
+ >BONUS TIP: you can check my other CTF [writeup](https://freezeluiz.github.io/CTF-Writeups/sector443ctf-iknowsecret.html) if you want to gain the admin's account. 😉
  
 That is all we need to get to the next step!
 
